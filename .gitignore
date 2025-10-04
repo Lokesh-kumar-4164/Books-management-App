@@ -1,0 +1,34 @@
+# Environment variables
+backend/.env
+frontend/.env
+
+# Node modules
+backend/node_modules/
+frontend/node_modules/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build / production folders
+frontend/dist/
+frontend/build/
+backend/build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor files
+.vscode/
+.idea/
+
+# Optional: lock files if you want (sometimes better to keep)
+# package-lock.json
+# yarn.lock
+
+# Optional: coverage reports
+coverage/
