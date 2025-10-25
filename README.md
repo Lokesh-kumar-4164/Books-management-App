@@ -1,6 +1,6 @@
 
 
-# 📚 Book Management App - MERN Stack
+# 📚 BookNook- MERN Stack
 
 A full-stack **Books Review Application** built with **MERN (MongoDB, Express, React, Node.js)**.  
 Users can browse books, submit ratings and reviews, and manage their own reviews.
