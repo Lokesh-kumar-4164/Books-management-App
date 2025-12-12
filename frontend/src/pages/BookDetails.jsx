@@ -33,7 +33,8 @@ function BookDetails() {
   const handleDeleteReview = async (reviewId) => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     try {
-      await apiClient.delete(`https://api-booknook.onrender.com/api/books/delete-review/${reviewId}`);
+      const response = await apiClient.delete(`https://api-booknook.onrender.com/api/books/delete-review/${reviewId}`);
+      if(response.status!=204) throw new Error("Failed to delete review.");
       const updated = reviews.filter((r) => r._id !== reviewId);
       setReviews(updated);
       calculateAvg(updated);
@@ -51,8 +52,11 @@ function BookDetails() {
       const response = await apiClient.get(
         `https://api-booknook.onrender.com/api/books/reviews/${book._id}`
       );
+      // const response = await apiClient.get(
+      //   `http://localhost:3200/api/books/reviews/${book._id}`
+      // );
       setReviews(response.data.reviews);
-      console.log('This is response',response.data.reviews );
+      
       calculateAvg(response.data.reviews);
     } catch (e) {
       console.log("Error fetching reviews:", e);
@@ -111,18 +115,19 @@ function BookDetails() {
                   </div>
                   <p className="text-gray-700">
                     {review.review || "No text, just a rating!"}
+                    
                   </p>
 
                   {/* Delete button only for the user who posted the review */}
                   
-                    {/*user?._id === review.userId && (
+                    {user && user._id === review.userId && (
                      <button 
-                    //   onClick={() => handleDeleteReview(review._id)}
-                    //   className="absolute top-2 right-2 text-red-500 hover:underline text-sm"
-                    // >
-                    //   Delete
-                    // </button>
-                  // )*/}
+                       onClick={() => handleDeleteReview(review._id)}
+                       className="absolute top-2 right-2 text-red-500 hover:underline text-sm"
+                     >
+                       Delete 
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

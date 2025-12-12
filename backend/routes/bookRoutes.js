@@ -26,6 +26,7 @@ router.get("/reviews/:id",async (req,res) => {
             if(r.book._id.toString() === book.toString()){
                 return {
                     _id:r._id,
+                    userId:r.user._id,
                     user:r.user.name,
                     rating:r.rating,
                     review:r.review
@@ -49,6 +50,16 @@ router.post("/add-review",async (req,res) => {
         res.status(200).json({message:"Review added successfully"});
     }catch(e){
         console.log(e); 
+    }
+})
+
+router.delete("/delete-review/:id",async (req,res) => {
+    const {id} = req.params;
+    try{
+        await Review.findByIdAndDelete(id);   
+        res.status(204).json({message:"Review deleted successfully"});
+    }catch(e){
+        console.log(e);
     }
 })
 
