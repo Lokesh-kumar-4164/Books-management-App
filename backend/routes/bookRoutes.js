@@ -32,7 +32,7 @@ router.get("/reviews/:id",async (req,res) => {
                 } 
             }
         })
-        console.log("This is from server",reviews)
+        
         res.status(200).json({reviews});
 
     }catch(e){

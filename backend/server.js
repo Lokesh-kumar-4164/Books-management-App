@@ -19,8 +19,7 @@ mongoose
     dbName: "BOOKS_DB",
   })
   .then(async () => {
-    console.log("Connection Successful");
-    console.log(await Review.find());
+    
     app.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT} `);
     });
