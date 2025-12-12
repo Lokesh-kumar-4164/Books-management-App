@@ -5,7 +5,7 @@ import Loading from './components/Loading'
 import './App.css'
 
 
-const Index = lazy(() => import('./pages/index'))
+const Index = lazy(() => import('./pages/Index'))
 const Login = lazy(() => import("./pages/Login"))
 const Navbar = lazy(() => import('./components/Navigation'))
 const Register = lazy(() => import("./pages/Register"))

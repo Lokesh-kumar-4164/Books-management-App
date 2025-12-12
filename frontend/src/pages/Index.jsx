@@ -1,19 +1,14 @@
 import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import BookList from "../components/BookList";
-import useUser from "../context/useUser";
+
 
 const BookCard = lazy(() => import("../components/BookCard"));
 
-const books = [
-  { id: 1, title: "Atomic Habits", author: "James Clear" },
-  { id: 2, title: "The Subtle Art of Not Giving a F***", author: "Mark Manson" },
-  { id: 3, title: "Clean Code", author: "Robert C. Martin" },
-  { id: 4, title: "Deep Work", author: "Cal Newport" }
-];
+
 
 function App() {
-  const { user, login, logout } = useUser();
+  //const { user, login, logout } = useUser();
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-800">
