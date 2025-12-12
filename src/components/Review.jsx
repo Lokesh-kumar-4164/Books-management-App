@@ -25,26 +25,25 @@ const ReviewForm = ({ bookID, addReviewToState }) => {
 
     const reviewData = {
       rating,
-      comment: reviewText.trim() || "-",
+      comment: reviewText.trim() || "No text, just a rating!",
     };
 
     try {
       const response = await apiClient.post(
         "http://localhost:3200/api/books/add-review",
         {
-          bookId: bookID,
-          userId: user._id,
-          rating: reviewData.rating,
-          review: reviewData.comment,
+          book_id: bookID, // match schema
+          user_id: user._id, // match schema
+          rating,
+          review: reviewText.trim() || "No text, just a rating!",
         }
       );
 
+      // Update state with saved review from backend
+      addReviewToState(response.data);
+
       // Add new review to parent state
-      addReviewToState({
-        _id: response.data._id || Math.random(), 
-        user: user.name,
-        ...reviewData,
-      });
+      
 
       // Reset form
       setRating(0);
@@ -83,7 +82,9 @@ const ReviewForm = ({ bookID, addReviewToState }) => {
         </div>
 
         <p className="mt-2 mb-4 font-semibold text-gray-700">
-          {rating > 0 ? `Selected Rating: ${rating}/5` : "Click a star to rate!"}
+          {rating > 0
+            ? `Selected Rating: ${rating}/5`
+            : "Click a star to rate!"}
         </p>
 
         {/* Review Textarea */}

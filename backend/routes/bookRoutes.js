@@ -16,35 +16,39 @@ router.get('/',async (req,res) => {
 })
 
 router.get("/reviews/:id",async (req,res) => {
-    const {id } = req.params;
+    const {id:book } = req.params;
+    
     try{
-        const reviews = await Review.find({book_id:id})
-        const reviewsPromises = reviews.map(async (review) => {
-            review = review.toObject()
-            const user = await User.findById(review.user_id)
-            return {
-                id:review._id,
-                user: user?  user.name: "Unknown",
-                rating:review.rating,
-                comment:review.review
+        const reviewData = await Review.find({book})
+            .populate({path:"user",select:"name"})
+            .populate({path:"book",select:"title"});
+        const reviews = reviewData.map((r) => {
+            if(r.book._id.toString() === book.toString()){
+                return {
+                    _id:r._id,
+                    user:r.user.name,
+                    rating:r.rating,
+                    review:r.review
+                } 
             }
         })
-        const reviewsData = await Promise.all(reviewsPromises)
-        res.status(200).json(reviewsData)
+        console.log("This is from server",reviews)
+        res.status(200).json({reviews});
+
     }catch(e){
         console.log(e)
     }
 })
 
 router.post("/add-review",async (req,res) => {
-    console.log(req.body)
-    const {bookId:book_id,userId:user_id,rating,review} = req.body;
-    try{
-        const newReview = new Review({book_id,user_id,rating,review});
+    
+    const {bookId:book,userId:user,rating,review} = req.body;
+    try{ 
+        const newReview = new Review({book,user,rating,review});
         await newReview.save();
         res.status(200).json({message:"Review added successfully"});
     }catch(e){
-        console.log(e);
+        console.log(e); 
     }
 })
 

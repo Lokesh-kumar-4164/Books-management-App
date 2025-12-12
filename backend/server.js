@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import bookRoutes from "./routes/bookRoutes.js";
-
+import Review from './models/reviews.js'
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
@@ -14,13 +14,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/books",bookRoutes)
 
 const db = process.env.MONGO_URI;
-mongoose
+mongoose 
   .connect(db, {
     dbName: "BOOKS_DB",
   })
   .then(async () => {
     console.log("Connection Successful");
-
+    console.log(await Review.find());
     app.listen(process.env.PORT, () => {
       console.log(`Server is running on port ${process.env.PORT} `);
     });
@@ -35,5 +35,6 @@ conn.on("error", (err) => {
 });
 
 app.get("/", (req, res) => {
+  
   res.send("Received");
 });

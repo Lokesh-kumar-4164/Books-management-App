@@ -8,25 +8,14 @@ import useUser from "../context/useUser.jsx";
 function BookDetails() {
   const { user } = useUser();
   const location = useLocation();
-  const book = location.state; // book object passed via Link
-  const [reviews, setReviews] = useState(null);
+  const book = location.state; 
+  const [reviews, setReviews] = useState([]);
   const [avgRating, setAvgRating] = useState(0);
 
   // Fetch reviews
-  const fetchReviews = async () => {
-    try {
-      const response = await apiClient.get(
-        `http://localhost:3200/api/books/reviews/${book._id}`
-      );
-      setReviews(response.data);
-      calculateAvg(response.data);
-    } catch (e) {
-      console.log("Error fetching reviews:", e);
-      setReviews([]);
-    }
-  };
+ 
 
-  // Calculate average rating
+  
   const calculateAvg = (reviewsArray) => {
     if (reviewsArray.length === 0) return setAvgRating(0);
     const sum = reviewsArray.reduce((acc, r) => acc + r.rating, 0);
@@ -57,11 +46,24 @@ function BookDetails() {
 
   useEffect(() => {
     if (!book) return;
-    fetchReviews();
-    window.scrollTo(0, 0);
+     const fetchReviews = async () => {
+    try {
+      const response = await apiClient.get(
+        `http://localhost:3200/api/books/reviews/${book._id}`
+      );
+      setReviews(response.data.reviews);
+      console.log('This is response',response.data.reviews );
+      calculateAvg(response.data);
+    } catch (e) {
+      console.log("Error fetching reviews:", e);
+      setReviews([]);
+    }
+  };
+  fetchReviews()
+    
   }, [book]);
 
-  if (!reviews) return <Loading />;
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12 font-sans">
@@ -87,7 +89,7 @@ function BookDetails() {
         <ReviewForm bookID={book._id} addReviewToState={addReviewToState} />
 
         {/* Reviews List */}
-        {reviews.length === 0 ? (
+        {(reviews && reviews.length === 0) ? (
           <h3 className="text-xl font-semibold text-gray-600 mt-6">
             No reviews yet
           </h3>
@@ -95,7 +97,7 @@ function BookDetails() {
           <div className="mt-6">
             <h3 className="text-2xl font-semibold mb-4 text-teal-700">Reviews</h3>
             <div className="space-y-4">
-              {reviews.map((review) => (
+              {reviews && reviews.map((review) => (
                 <div
                   key={review._id || review.id}
                   className="border p-4 rounded-lg bg-gray-50 shadow-sm hover:shadow-md transition relative"
@@ -108,7 +110,7 @@ function BookDetails() {
                     </span>
                   </div>
                   <p className="text-gray-700">
-                    {review.comment || "No text, just a rating!"}
+                    {review.review || "No text, just a rating!"}
                   </p>
 
                   {/* Delete button only for the user who posted the review */}

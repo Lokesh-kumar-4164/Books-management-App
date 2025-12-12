@@ -11,7 +11,7 @@ const authJWT = async (req, res, next) => {
         const token = auth.split(" ")[1];
         const decoded = await jwt.verify(token,secretKey)
         req.user = decoded;
-        console.log(decoded)
+       
         next()
     }catch(e){
         console.log(e)

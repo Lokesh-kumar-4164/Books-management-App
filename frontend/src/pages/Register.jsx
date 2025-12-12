@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+
+import { useNavigate } from "react-router-dom";
 import apiClient from "../services/api-config.js"
+
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const Navigate = useNavigate()
 
 
@@ -17,7 +20,7 @@ function Register() {
         "users/register", 
         {name,email,password}
       );
-      if(response.status==='ok'){
+      if(response.status===201){
         alert("Signup successful. Please login again to continue.");
         Navigate("/login");
       }
