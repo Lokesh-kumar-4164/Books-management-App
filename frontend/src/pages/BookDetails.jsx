@@ -33,7 +33,7 @@ function BookDetails() {
   const handleDeleteReview = async (reviewId) => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     try {
-      await apiClient.delete(`http://localhost:3200/api/books/delete-review/${reviewId}`);
+      await apiClient.delete(`https://api-booknook.onrender.com/api/books/delete-review/${reviewId}`);
       const updated = reviews.filter((r) => r._id !== reviewId);
       setReviews(updated);
       calculateAvg(updated);
@@ -49,11 +49,11 @@ function BookDetails() {
      const fetchReviews = async () => {
     try {
       const response = await apiClient.get(
-        `http://localhost:3200/api/books/reviews/${book._id}`
+        `https://api-booknook.onrender.com/api/books/reviews/${book._id}`
       );
       setReviews(response.data.reviews);
       console.log('This is response',response.data.reviews );
-      calculateAvg(response.data);
+      calculateAvg(response.data.reviews);
     } catch (e) {
       console.log("Error fetching reviews:", e);
       setReviews([]);
@@ -114,14 +114,15 @@ function BookDetails() {
                   </p>
 
                   {/* Delete button only for the user who posted the review */}
-                  {user?._id === review.userId && (
-                    <button
-                      onClick={() => handleDeleteReview(review._id)}
-                      className="absolute top-2 right-2 text-red-500 hover:underline text-sm"
-                    >
-                      Delete
-                    </button>
-                  )}
+                  
+                    {/*user?._id === review.userId && (
+                     <button 
+                    //   onClick={() => handleDeleteReview(review._id)}
+                    //   className="absolute top-2 right-2 text-red-500 hover:underline text-sm"
+                    // >
+                    //   Delete
+                    // </button>
+                  // )*/}
                 </div>
               ))}
             </div>

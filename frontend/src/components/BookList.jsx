@@ -12,7 +12,7 @@ const  BookList = () => {
 
   const getBooks = async () => {
     try{
-      const response = await apiClient.get("http://localhost:3200/api/books");
+      const response = await apiClient.get("https://api-booknook.onrender.com/api/books");
       setBooks(response.data)
     }catch(e){
       console.log("Error while fetching books"+e)
